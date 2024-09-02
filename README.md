@@ -16,3 +16,4 @@ This project uses the following main packages:
 - **React**
 - **Vite**
 - **React Router**: npm i react-router-dom
+- **React Icons**: npm i react-icons --save

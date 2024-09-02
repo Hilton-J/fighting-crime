@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 
 const NavBar = () => {
   return (
@@ -5,17 +6,17 @@ const NavBar = () => {
       <nav className="bg-blue-950 ">
         <ul className="flex px-10 py-5 text-white justify-between">
           <li className=" hover:text-blue-400 hover:underline">
-            <a href="">Home</a>
-            </li>
+            <NavLink to={'/'}>Home</NavLink>
+         </li>
           <li className=" hover:text-blue-400 hover:underline">
-            <a href="">About Us</a>
-            </li>
+            <NavLink to={'/about'}>About Us</NavLink>
+         </li>
           <li className=" hover:text-blue-400 hover:underline">
-            <a href="">Talk to us</a>
-            </li>
+            <NavLink to={'/talk'}>Talk to us</NavLink>
+         </li>
           <li className=" hover:text-blue-400 hover:underline">
-            <a href="">Wanted</a>
-            </li>
+            <NavLink to={'/wanted'}>Wanted</NavLink>
+         </li>
         
         </ul>
       </nav>

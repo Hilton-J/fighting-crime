@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   const [criminals, setCrime] = useState([]);
@@ -33,7 +34,7 @@ const Main = () => {
 
               {/* <p>{criminal.description}</p> */}
               <div className=" w-full">
-                <img src={criminal.images[0]?.original || ''} alt={criminal.title} className="size-full" />
+                <Link to={`/view/${criminal.uid}`}><img src={criminal.images[0]?.original || ''} alt={criminal.title} className="size-full" /></Link>
               </div>
               <h3>{criminal.title}</h3>
             </div>
