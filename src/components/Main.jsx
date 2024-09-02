@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import axios from 'axios'
 
 const Main = () => {
   const [criminals, setCrime] = useState([]);
@@ -23,30 +22,21 @@ const Main = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const { data } = await axios.get(`https://api.fbi.gov/wanted/v1/list`);
-  //     setCrime(data);
-  //   };
-  //   fetchData();
-  // }, []);
-
   console.log(criminals);
   return (
     <div className="flex justify-center">
       {/* {error && <p>Error: {error}</p>} */}
-      <div className="grid md:grid-cols-4 w-[60%] gap-x-[5rem]">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 w-[60%] gap-x-[3rem] gap-y-[0.5rem]">
         {
           criminals.map((criminal) => (
-            <div className="w-full" key={criminal.uid}>
+            <div className="w-full grid grid-rows-subgrid row-span-2 shadow-lg my-10" key={criminal.uid}> {/** grid grid-rows-subgrid row-span-2 == These 3 classes work together in making sure that your card content (the children) are aligned. You guys can remove and add each class to see them in action. I used row because the card content is displayed in a row direction. The 2 in row-span-2, indicates the number of the elements (children) in my card. */}
 
               {/* <p>{criminal.description}</p> */}
-              <div className=" h-[75%] w-full">
+              <div className=" w-full">
                 <img src={criminal.images[0]?.original || ''} alt={criminal.title} className="size-full" />
               </div>
               <h3>{criminal.title}</h3>
             </div>
-            // criminals.race_raw
           ))
         }
       </div>

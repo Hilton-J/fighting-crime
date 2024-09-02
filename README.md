@@ -9,4 +9,10 @@ Currently, two official plugins are available:
 
 
 
-- **AXIOS** : npm i axios
+### Dependencies
+
+This project uses the following main packages:
+
+- **React**
+- **Vite**
+- **React Router**: npm i react-router-dom

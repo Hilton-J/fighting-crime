@@ -1,16 +1,17 @@
-
-import Hero from './components/hero.jsx'
-import Footer from './components/footer.jsx'
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import Main from './components/Main.jsx'
-function App() {
+import MainLayout from './layouts/MainLayout.jsx';
 
-  return (
-    <>
-      <Hero />
-      <Main />
-<Footer/>
-    </>
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<MainLayout />}>
+        <Route index element={<Main />} />
+      </Route>
+    )
   )
+
+  return <RouterProvider router={router} />
 }
 
 export default App
