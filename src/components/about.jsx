@@ -3,7 +3,7 @@ const about = () => {
   return (
     <>
 <div className=''> 
-
+me
 </div>
     </>
   )
