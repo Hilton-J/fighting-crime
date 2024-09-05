@@ -1,49 +1,66 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Pagination from "./Pagination";
+import { Pagination } from 'flowbite-react'
+// import Pagination from "./Pagination";
+
+const customTheme = {
+  button: {
+    color: {
+      primary: 'bg-red-500 hover:bg-red-600',
+    },
+  },
+};
 
 const Wanted = () => {
   const [criminals, setCrime] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [totalPages, setTotalPages] = useState(0);
 
 
   const [currentPage, setCurrentPage] = useState(1); //set page number
+  const itemsLength = 20;
 
-  const [postPerPage, setPostPerPage] = useState(8); // number of results per page
+  // const [postPerPage, setPostPerPage] = useState(8); // number of results per page
 
-  const lastPostIndex = currentPage * postPerPage; // (1 * 8) = 8
-  const firstPostIndex = lastPostIndex - postPerPage; // (8-8) = 0
-  const totalPosts = criminals.length;
- const url = input
-   ? `https://api.fbi.gov/wanted/v1/list?title=${encodeURIComponent(input)}`
+  // const lastPostIndex = currentPage * postPerPage; // (1 * 8) = 8
+  // const firstPostIndex = lastPostIndex - postPerPage; // (8-8) = 0
+  // const totalPosts = criminals.length;
+  const url = input
+    ? `https://api.fbi.gov/wanted/v1/list?title=${encodeURIComponent(input)}`
     : `https://api.fbi.gov/wanted/v1/list?page=${currentPage}`;
-  
+
   // console.log(lastPostIndex);
   // console.log(firstPostIndex);
   // console.log(totalPosts);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setCrime(data.items);
-    } catch (error) {
-      setError(error.message);
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        const totalPages = Math.ceil(data.total / itemsLength);
+        console.log(data.total);
+        console.log(data.items.length);
+        console.log(totalPages);
+        setTotalPages(totalPages);
+        setCrime(data.items);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchData();
-  }, [currentPage,input]);
+  }, [currentPage, url]);
+
+  console.log(totalPages);
 
   const setPage1 = () => {
     setCurrentPage(1)
@@ -56,7 +73,7 @@ const Wanted = () => {
   const setPage3 = () => {
     setCurrentPage(3);
   };
-console.log(currentPage)
+
   // useEffect(() => {
   //   if (input) {
   //     setLoading(true);
@@ -82,6 +99,8 @@ console.log(currentPage)
   };
 
   // const currentPosts = criminals.slice(firstPostIndex, lastPostIndex);
+
+  const onPageChange = (page) => setCurrentPage(page);
 
   return (
     <div>
@@ -118,7 +137,11 @@ console.log(currentPage)
           3
         </button>
       </div>
-
+      
+      {/* TODO: Pagination is not what it's supposed to be */}
+      <div className="flex overflow-x-auto sm:justify-center flex-row">
+        <Pagination theme={{ theme: customTheme }} currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} className="flex space-x-10" />
+      </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
