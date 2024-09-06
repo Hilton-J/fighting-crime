@@ -18,3 +18,4 @@ This project uses the following main packages:
 - **React Router**: npm i react-router-dom
 - **React Icons**: npm i react-icons --save
 - **Flowbite React**: npm i flowbite-react
+- **REACT PAGINATION** : npm i react-paginate

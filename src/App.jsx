@@ -6,6 +6,7 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import Wanted from './components/Wanted.jsx';
 import TalkToUs from './components/TalkToUs.jsx';
 import About from './components/about.jsx';
+
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(

@@ -1,39 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Pagination } from 'flowbite-react'
-// import Pagination from "./Pagination";
+import ReactPaginate from 'react-paginate'
 
-const customTheme = {
-  button: {
-    color: {
-      primary: 'bg-red-500 hover:bg-red-600',
-    },
-  },
-};
+
 
 const Wanted = () => {
   const [criminals, setCrime] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [totalPages, setTotalPages] = useState(0);
 
+  const [dataLength, setDataLength] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
-  const [currentPage, setCurrentPage] = useState(1); //set page number
-  const itemsLength = 20;
+  const pageCount = Math.ceil(dataLength / itemsPerPage);
 
-  // const [postPerPage, setPostPerPage] = useState(8); // number of results per page
-
-  // const lastPostIndex = currentPage * postPerPage; // (1 * 8) = 8
-  // const firstPostIndex = lastPostIndex - postPerPage; // (8-8) = 0
-  // const totalPosts = criminals.length;
   const url = input
     ? `https://api.fbi.gov/wanted/v1/list?title=${encodeURIComponent(input)}`
     : `https://api.fbi.gov/wanted/v1/list?page=${currentPage}`;
-
-  // console.log(lastPostIndex);
-  // console.log(firstPostIndex);
-  // console.log(totalPosts);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,11 +29,8 @@ const Wanted = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        const totalPages = Math.ceil(data.total / itemsLength);
-        console.log(data.total);
-        console.log(data.items.length);
-        console.log(totalPages);
-        setTotalPages(totalPages);
+        console.log(data);
+        setDataLength(data.total);
         setCrime(data.items);
       } catch (error) {
         setError(error.message);
@@ -60,50 +42,18 @@ const Wanted = () => {
     fetchData();
   }, [currentPage, url]);
 
-  console.log(totalPages);
-
-  const setPage1 = () => {
-    setCurrentPage(1)
-  }
-
-  const setPage2 = () => {
-    setCurrentPage(2);
-  };
-
-  const setPage3 = () => {
-    setCurrentPage(3);
-  };
-
-  // useEffect(() => {
-  //   if (input) {
-  //     setLoading(true);
-  //     fetch(
-  //       `https://api.fbi.gov/wanted/v1/list?title=${encodeURIComponent(input)}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         setCrime(json.items || []);
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         setError(err.message);
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     fetchData();
-  //   }
-  // }, [input]);
-
   const handleChange = (e) => {
     setInput(e.target.value);
   };
 
-  // const currentPosts = criminals.slice(firstPostIndex, lastPostIndex);
-
-  const onPageChange = (page) => setCurrentPage(page);
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    window.scroll(0, 0);
+    setCurrentPage(event.selected + 1);
+  };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <div className="bg-blue-950 my-8 text-white p-4 ">
         <h1>Wanted</h1>
       </div>
@@ -117,30 +67,22 @@ const Wanted = () => {
         />
       </div>
 
-      <div className="text-center space-x-5 my-4">
-        <button
-          onClick={setPage1}
-          className="w-[3rem] bg-blue-950 rounded-xl shadow-xl text-white"
-        >
-          1
-        </button>
-        <button
-          onClick={setPage2}
-          className="w-[3rem] bg-blue-950 rounded-xl shadow-xl text-white"
-        >
-          2
-        </button>
-        <button
-          onClick={setPage3}
-          className="w-[3rem] bg-blue-950 rounded-xl shadow-xl text-white"
-        >
-          3
-        </button>
-      </div>
-      
-      {/* TODO: Pagination is not what it's supposed to be */}
-      <div className="flex overflow-x-auto sm:justify-center flex-row">
-        <Pagination theme={{ theme: customTheme }} currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} className="flex space-x-10" />
+      <div className="flex w-full justify-center">
+        <ReactPaginate
+          breakLabel='...'
+          nextLabel="next >"
+          nextLinkClassName="px-3 py-2 rounded-lg hover:bg-blue-950 hover:text-white"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          previousLinkClassName='px-3 py-2 rounded-lg hover:bg-blue-950 hover:text-white'
+          renderOnZeroPageCount={null}
+          containerClassName='flex space-x-5 p-5'
+          pageLinkClassName='px-3 py-2 rounded-lg hover:bg-blue-950 hover:text-white'
+          activeLinkClassName='px-3 py-2 rounded-lg bg-blue-950 text-white'
+          disabledLinkClassName='hover:cursor-not-allowed hover:bg-transparent hover:text-black'
+        />
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
@@ -172,12 +114,6 @@ const Wanted = () => {
           <p>No criminal found</p>
         )}
       </div>
-
-      {/* <Pagination
-        totalPosts={totalPosts}
-        postsPerPage={postPerPage}
-        onPageChange={setCurrentPage}
-      /> */}
     </div>
   );
 };
