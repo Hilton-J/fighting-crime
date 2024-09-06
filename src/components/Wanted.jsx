@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate'
+import Spinner from "./Spinner";
+
 
 
 
@@ -8,7 +10,6 @@ const Wanted = () => {
   const [criminals, setCrime] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [dataLength, setDataLength] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +34,6 @@ const Wanted = () => {
         setDataLength(data.total);
         setCrime(data.items);
       } catch (error) {
-        setError(error.message);
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
@@ -68,7 +68,7 @@ const Wanted = () => {
       </div>
 
       <div className="flex w-full justify-center">
-        <ReactPaginate
+        {pageCount > 1 && <ReactPaginate
           breakLabel='...'
           nextLabel="next >"
           nextLinkClassName="px-3 py-2 rounded-lg hover:bg-blue-950 hover:text-white"
@@ -82,13 +82,11 @@ const Wanted = () => {
           pageLinkClassName='px-3 py-2 rounded-lg hover:bg-blue-950 hover:text-white'
           activeLinkClassName='px-3 py-2 rounded-lg bg-blue-950 text-white'
           disabledLinkClassName='hover:cursor-not-allowed hover:bg-transparent hover:text-black'
-        />
+        />}
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
 
       <div className="flex justify-center">
-        {criminals.length > 0 ? (
+        {loading ? <Spinner loading={loading} /> : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 w-[60%] gap-x-[3rem] gap-y-[0.5rem] ">
             {criminals.map((criminal) => (
               <div
@@ -110,8 +108,6 @@ const Wanted = () => {
               </div>
             ))}
           </div>
-        ) : (
-          <p>No criminal found</p>
         )}
       </div>
     </div>
