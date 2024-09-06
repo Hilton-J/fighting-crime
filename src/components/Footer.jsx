@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 
 const Footer = () => {
     return (
-        <footer className="bg-blue-950">
-            <div className="flex justify-between  lg:py-8 md:grid-cols-4">
-                <div className="w-[10rem] pl-[5rem]">
+        <footer className="bg-blue-950 w-screen">
+            <div className="flex justify-between flex-wrap lg:py-8 p-[1rem] w-full divide-y-2 sm:divide-y-0">
 
+                <div className="w-[10rem] ">
                     <ul className="text-gray-500 dark:text-gray-400 font-medium">
                         <li className="mb-4">
                             <Link to={'/'} className=" hover:underline">Home</Link>
@@ -24,7 +24,6 @@ const Footer = () => {
                 </div>
 
                 <div className="w-[20rem]">
-
                     <ul className="text-gray-500 dark:text-gray-400 font-medium">
                         <li className="mb-4">
                             <a href="#" className="hover:underline">Disclaimer</a>
@@ -42,8 +41,8 @@ const Footer = () => {
 
                 </div>
 
-                <div className="mr-10">
-                    <h2 className=" mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Head Office</h2>
+                <div className="w-full md:w-auto">
+                    <h2 className=" mb-6 text-sm font-semibold uppercase text-white">Head Office</h2>
                     <ul className="text-gray-500 dark:text-gray-400 font-medium">
                         <li className="mb-2">
                             <a href="#" className="hover:underline">Tel: +27 (0) 12 393 1000</a>

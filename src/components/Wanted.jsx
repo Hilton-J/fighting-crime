@@ -30,7 +30,6 @@ const Wanted = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data);
         setDataLength(data.total);
         setCrime(data.items);
       } catch (error) {
